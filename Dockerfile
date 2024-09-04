@@ -1,47 +1,20 @@
-FROM php:8.3-fpm
+FROM gabrieltva/php-fpm-node:latest
 
-# set your user name, ex: user=carlos
-ARG user
-ARG uid
+COPY . /var/www
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip
+# Instala dependecias do PHP composer
+RUN composer install
 
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+# Instala dependencias do Node e builda aplicação do frontend
+RUN npm install
+RUN npm run build
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd sockets
+# Permissões nos diretorios do Laravel
+RUN chown -R www-data:www-data /var/www/storage
+RUN chown -R www-data:www-data /var/www/bootstrap/cache
+RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
-# Get latest Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Comandos para gerar Key do Laravel
+RUN php artisan key:generate
 
-# Create system user to run Composer and Artisan Commands
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-RUN mkdir -p /home/$user/.composer
-RUN chown -R $user:$user /home/$user
-RUN chown -R www-data:www-data /var/www
-
-# Install redis
-RUN pecl install -o -f redis \
-    &&  rm -rf /tmp/pear \
-    &&  docker-php-ext-enable redis
-
-# Set working directory
-WORKDIR /var/www
-
-# Copy custom configurations PHP
-COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
-
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
-RUN apt update
-RUN apt install nodejs -y
-RUN apt install npm -y
+EXPOSE 80
