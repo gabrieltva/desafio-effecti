@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\Enums\UserStatus;
-use App\Rules\Cpf;
-use Illuminate\Validation\Rules\Enum;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
@@ -22,23 +20,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'cpf' => ['required', 'unique:users', new Cpf],
-            'birth_date' => 'required|date',
-            'email' => 'required|string|email|max:255|unique:users',
-            'phone' => 'required|string|max:15',
-            'cep' => 'required|string|max:9',
-            'state' => 'required|string|max:2',
-            'city' => 'required|string|max:255',
-            'neighborhood' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'status' => ['required', new Enum(UserStatus::class)],
-        ]);
-
-        $user = User::create($request->all());
+        $user = User::create($request->validated());
 
         return response()->json($user, 201);
     }
@@ -48,7 +32,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
         if (!$user || $user->status === UserStatus::Inactive) {
             return response()->json(['message' => 'User not found'], 404);
@@ -60,29 +44,15 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
         if (!$user || $user->status === UserStatus::Inactive) {
             return response()->json(['message' => 'User not found'], 404);
         }
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'cpf' => ['required', 'unique:users,cpf,' . $user->id, new Cpf],
-            'birth_date' => 'required|date',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'phone' => 'required|string|max:15',
-            'cep' => 'required|string|max:9',
-            'state' => 'required|string|max:2',
-            'city' => 'required|string|max:255',
-            'neighborhood' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'status' => ['required', new Enum(UserStatus::class)],
-        ]);
-
-        $user->update($request->all());
+        $user->update($request->validated());
 
         return response()->json($user);
     }
@@ -92,7 +62,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
         if (!$user || $user->status === UserStatus::Inactive) {
             return response()->json(['message' => 'User not found'], 404);
