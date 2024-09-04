@@ -33,7 +33,7 @@ class UserFactory extends Factory
             'city' => fake()->city(),
             'neighborhood' => fake()->citySuffix(),
             'address' => fake()->address(),
-            'status' => fake()->randomElement([UserStatus::Inactive, UserStatus::Active]),
+            'status' => UserStatus::Active
         ];
     }
 }
