@@ -6,12 +6,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Button from '@/components/ui/button/Button.vue';
 import { Pencil2Icon, TrashIcon } from '@radix-icons/vue';
 import { Input } from '@/components/ui/input';
+import RemoveDialog from '@/components/remove-dialog/RemoveDialog.vue';
 
 const content = ref([]);
 const contentFiltered = ref([]);
 
 const isLoading = ref(true);
 const filterInput = ref('');
+
+const userToRemove = ref(null);
 
 const columns = [
   "ID",
@@ -41,7 +44,6 @@ const getData = async () => {
   isLoading.value = true;
   try {
     const data = await getAllUser();
-    console.log(data);
     content.value = data;
     contentFiltered.value = data;
   }
@@ -71,12 +73,14 @@ const filterData = (search) => {
     Lista de usuários
   </h1>
 
-  <div class="space-y-8 lg:px-6 flex flex-col">
+  <Input class="max-w-64 w-full text-white" placeholder="Filtro" v-model="filterInput"
+    @input="filterData(filterInput)" />
+
+  <div class="space-y-8 flex flex-col">
     <SkeletonUserList v-if="isLoading" v-for="index in 4" :key="index" />
   </div>
 
-  <div v-if="!isLoading" class="space-y-8 lg:px-6 flex flex-col text-white">
-    <Input class="max-w-64 w-full" placeholder="Filtro" v-model="filterInput" @input="filterData(filterInput)" />
+  <div v-if="!isLoading" class="space-y-8 flex flex-col text-white">
     <div class="rounded-md border">
       <Table>
         <TableHeader>
@@ -97,10 +101,9 @@ const filterData = (search) => {
                     <Pencil2Icon class="w-4 h-5" />
                   </router-link>
                 </Button>
-                <Button title="deletar usuário" variant="none" class="bg-red-700 text-white">
-                  <router-link :to="`/user/${user.id}`">
-                    <TrashIcon class="w-5 h-5" />
-                  </router-link>
+                <Button @click="() => { userToRemove = user.id }" title="deletar usuário" variant="none"
+                  class="bg-red-700 text-white">
+                  <TrashIcon class="w-5 h-5" />
                 </Button>
               </div>
             </TableCell>
@@ -115,4 +118,6 @@ const filterData = (search) => {
       </Table>
     </div>
   </div>
+
+  <RemoveDialog v-if="userToRemove !== null" />
 </template>
