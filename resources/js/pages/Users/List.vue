@@ -1,14 +1,14 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { getAllUser } from '@/services/api';
+import { getAllUser, deleteUser } from '@/services/api';
 import SkeletonUserList from '@/components/ui/skeleton-user-list/SkeletonUserList.vue';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import Button from '@/components/ui/button/Button.vue';
-import { Pencil2Icon, TrashIcon } from '@radix-icons/vue';
+import { FileTextIcon, Pencil2Icon, TrashIcon } from '@radix-icons/vue';
 import { Input } from '@/components/ui/input';
 import RemoveDialog from '@/components/ui/remove-dialog/RemoveDialog.vue';
 import { toast } from '@/components/ui/toast';
-import { deleteUser } from '@/services/api';
+import { exportToCsv } from '@/utils/export';
 
 const content = ref([]);
 const contentFiltered = ref([]);
@@ -96,6 +96,8 @@ const continueRemove = async () => {
   });
   await getData();
 };
+
+
 </script>
 
 <template>
@@ -105,7 +107,8 @@ const continueRemove = async () => {
 
   <div class="flex justify-between space-x-2 lg:flex-row space-y-2">
     <Input class="max-w-64 w-full" placeholder="Filtro" v-model="filterInput" @input="filterData(filterInput)" />
-    <Button class="bg-green-600 hover:bg-green-800 text-white">
+    <Button class="bg-green-600 hover:bg-green-800 text-white" @click="() => exportToCsv(contentFiltered)">
+      <FileTextIcon class="w-4 h-4 me-1" />
       Exportar usuários
     </Button>
   </div>
