@@ -73,8 +73,7 @@ const filterData = (search) => {
     Lista de usuários
   </h1>
 
-  <Input class="max-w-64 w-full" placeholder="Filtro" v-model="filterInput"
-    @input="filterData(filterInput)" />
+  <Input class="max-w-64 w-full" placeholder="Filtro" v-model="filterInput" @input="filterData(filterInput)" />
 
   <div class="space-y-8 flex flex-col">
     <SkeletonUserList v-if="isLoading" v-for="index in 4" :key="index" />
@@ -96,11 +95,11 @@ const filterData = (search) => {
             <TableCell v-for="header, index in columnsDb" :key="`${header}-${index}`">
               <template v-if="header !== 'actions'">{{ user[header.toLowerCase()] }}</template>
               <div v-else class="space-x-2">
-                <Button title="editar usuário" variant="none" class="bg-blue-700 text-white">
-                  <router-link :to="`/user/${user.id}`">
+                <router-link :to="`/user/${user.id}`">
+                  <Button title="editar usuário" variant="none" class="bg-blue-700 text-white">
                     <Pencil2Icon class="w-4 h-5" />
-                  </router-link>
-                </Button>
+                  </Button>
+                </router-link>
                 <Button @click="() => { userToRemove = user.id }" title="deletar usuário" variant="none"
                   class="bg-red-700 text-white">
                   <TrashIcon class="w-5 h-5" />

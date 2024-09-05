@@ -93,3 +93,18 @@ export const deleteUser = async (id) => {
     throw new Error("Erro ao tentar deletar usuário");
   }
 }
+
+/**
+ * Recupera dados de endereço a partir do CEP
+ * @param {string} cep 
+ */
+export const getAddressByCep = async (cep) => {
+  const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
+  const data = await response.json()
+
+  if (!response.ok) {
+    throw new Error("Erro ao tentar recuperar endereço");
+  }
+
+  return data;
+}

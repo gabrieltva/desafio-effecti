@@ -8,10 +8,10 @@ import Button from '@/components/ui/button/Button.vue';
     <RouterLink to="/">
       Usuários
     </RouterLink>
-    <Button variant="secondary">
-      <RouterLink to="/new">
+    <RouterLink to="/new">
+      <Button variant="secondary">
         Novo usuário
-      </RouterLink>
-    </Button>
+      </Button>
+    </RouterLink>
   </nav>
 </template>

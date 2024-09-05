@@ -1,5 +1,6 @@
 <script setup>
 import Header from '@/components/ui/header/Header.vue'
+import Toaster from '@/components/ui/toast/Toaster.vue'
 </script>
 
 <template>
@@ -9,4 +10,6 @@ import Header from '@/components/ui/header/Header.vue'
       <router-view />
     </div>
   </div>
+
+  <Toaster />
 </template>
