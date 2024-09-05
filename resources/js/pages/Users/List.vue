@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import Button from '@/components/ui/button/Button.vue';
 import { Pencil2Icon, TrashIcon } from '@radix-icons/vue';
 import { Input } from '@/components/ui/input';
-import RemoveDialog from '@/components/remove-dialog/RemoveDialog.vue';
+import RemoveDialog from '@/components/ui/remove-dialog/RemoveDialog.vue';
 
 const content = ref([]);
 const contentFiltered = ref([]);
@@ -73,7 +73,7 @@ const filterData = (search) => {
     Lista de usuários
   </h1>
 
-  <Input class="max-w-64 w-full text-white" placeholder="Filtro" v-model="filterInput"
+  <Input class="max-w-64 w-full" placeholder="Filtro" v-model="filterInput"
     @input="filterData(filterInput)" />
 
   <div class="space-y-8 flex flex-col">

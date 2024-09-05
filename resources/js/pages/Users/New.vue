@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,6 +15,37 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/components/ui/toast'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup } from '@/components/ui/select'
+
+const statesField = [
+  "AC",
+  "AL",
+  "AP",
+  "AM",
+  "BA",
+  "CE",
+  "DF",
+  "ES",
+  "GO",
+  "MA",
+  "MT",
+  "MS",
+  "MG",
+  "PA",
+  "PB",
+  "PR",
+  "PE",
+  "PI",
+  "RJ",
+  "RN",
+  "RS",
+  "RO",
+  "RR",
+  "SC",
+  "SP",
+  "SE",
+  "TO"
+]
 
 const formSchema = toTypedSchema(z.object({
   name: z.string().min(2).max(50),
@@ -41,6 +71,28 @@ const onSubmit = handleSubmit((values) => {
     description: h('pre', { class: 'mt-2 w-[340px] rounded-md bg-slate-950 p-4' }, h('code', { class: 'text-white' }, JSON.stringify(values, null, 2))),
   })
 })
+
+const createMask = (value: string, mask: string): string => {
+  value = value.replace(/\D/g, '')
+  
+  let maskedValue = ''
+  let valueIndex = 0
+
+  for (let i = 0; i < mask.length; i++) {
+    if (mask[i] === '#') {
+      if (value[valueIndex]) {
+        maskedValue += value[valueIndex++]
+      } else {
+        break
+      }
+    } else {
+      maskedValue += mask[i]
+    }
+  }
+
+  return maskedValue
+}
+
 </script>
 
 <template>
@@ -49,101 +101,121 @@ const onSubmit = handleSubmit((values) => {
       Novo usuário
     </h1>
 
-    <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+    <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 pb-4">
       <FormField v-slot="{ componentField }" name="name">
         <FormItem class="col-span-4">
-          <FormLabel>Nome</FormLabel>
+          <FormLabel class="text-white">Nome</FormLabel>
           <FormControl>
-            <Input type="text" placeholder="Sofia D'ávila Sobrinho" v-bind="componentField" />
+            <Input type="text" placeholder="Insira o nome" v-bind="componentField" />
           </FormControl>
           <FormMessage />
         </FormItem>
       </FormField>
       <FormField v-slot="{ componentField }" name="cpf">
         <FormItem class="col-span-2">
-          <FormLabel>CPF</FormLabel>
+          <FormLabel class="text-white">CPF</FormLabel>
           <FormControl>
-            <Input type="text" placeholder="613.048.009-11" v-bind="componentField" />
+            <Input type="text" placeholder="000.000.000-00" v-bind="componentField"
+              @input="componentField.value = createMask(componentField.value, '###.###.###-##')" />
           </FormControl>
           <FormMessage />
         </FormItem>
       </FormField>
       <FormField v-slot="{ componentField }" name="birth_date">
         <FormItem class="col-span-2">
-          <FormLabel>Data de nascimento</FormLabel>
+          <FormLabel class="text-white">Data de nascimento</FormLabel>
           <FormControl>
-            <Input type="text" placeholder="1998-06-11" v-bind="componentField" />
+            <Input type="text" placeholder="00/00/0000" v-bind="componentField" />
           </FormControl>
           <FormMessage />
         </FormItem>
       </FormField>
       <FormField v-slot="{ componentField }" name="email">
         <FormItem class="col-span-2">
-          <FormLabel>E-mail</FormLabel>
+          <FormLabel class="text-white">E-mail</FormLabel>
           <FormControl>
-            <Input type="text" placeholder="rodolfo.matos@gil.com.br" v-bind="componentField" />
+            <Input type="text" placeholder="Insira o e-mail" v-bind="componentField" />
           </FormControl>
           <FormMessage />
         </FormItem>
       </FormField>
       <FormField v-slot="{ componentField }" name="phone">
         <FormItem class="col-span-2">
-          <FormLabel>Telefone</FormLabel>
+          <FormLabel class="text-white">Telefone</FormLabel>
           <FormControl>
-            <Input type="text" placeholder="(49) 98923-9978" v-bind="componentField" />
+            <Input type="text" placeholder="(00) 00000-0000" v-bind="componentField" />
           </FormControl>
           <FormMessage />
         </FormItem>
       </FormField>
       <FormField v-slot="{ componentField }" name="cep">
-        <FormItem>
-          <FormLabel>CEP</FormLabel>
+        <FormItem class="col-span-2">
+          <FormLabel class="text-white">CEP</FormLabel>
           <FormControl>
-            <Input type="text" placeholder="70585-807" v-bind="componentField" />
+            <Input type="text" placeholder="00000-000" v-bind="componentField" />
           </FormControl>
           <FormMessage />
         </FormItem>
       </FormField>
       <FormField v-slot="{ componentField }" name="state">
-        <FormItem>
-          <FormLabel>State</FormLabel>
+        <FormItem class="col-span-1">
+          <FormLabel class="text-white">Estado</FormLabel>
           <FormControl>
-            <Input type="text" placeholder="AP" v-bind="componentField" />
+
+            <Select v-bind="componentField">
+              <SelectTrigger>
+                <SelectValue placeholder="__" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem v-for="state in statesField" :value="state">
+                    {{ state }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
           </FormControl>
           <FormMessage />
         </FormItem>
       </FormField>
       <FormField v-slot="{ componentField }" name="city">
-        <FormItem>
-          <FormLabel>City</FormLabel>
+        <FormItem class="col-span-3">
+          <FormLabel class="text-white">Cidade</FormLabel>
           <FormControl>
-            <Input type="text" placeholder="Irene d'Oeste" v-bind="componentField" />
+            <Input type="text" placeholder="" v-bind="componentField" />
           </FormControl>
           <FormMessage />
         </FormItem>
       </FormField>
       <FormField v-slot="{ componentField }" name="neighborhood">
-        <FormItem>
-          <FormLabel>Neighborhood</FormLabel>
+        <FormItem class="col-span-2">
+          <FormLabel class="text-white">Bairro</FormLabel>
           <FormControl>
-            <Input type="text" placeholder="do Norte" v-bind="componentField" />
+            <Input type="text" placeholder="" v-bind="componentField" />
           </FormControl>
           <FormMessage />
         </FormItem>
       </FormField>
       <FormField v-slot="{ componentField }" name="address">
-        <FormItem>
-          <FormLabel>Address</FormLabel>
+        <FormItem class="col-span-4">
+          <FormLabel class="text-white">Endereço</FormLabel>
           <FormControl>
-            <Input type="text" placeholder="94291-749, Avenida Isadora Amaral, 82\nMatias do Leste - ES"
-              v-bind="componentField" />
+            <Input type="text" placeholder="" v-bind="componentField" />
           </FormControl>
           <FormMessage />
         </FormItem>
       </FormField>
     </div>
-    <Button type="submit">
-      Submit
-    </Button>
+    <div class="space-x-4">
+      <Button variant="destructive" size="lg">
+        <router-link to="/">
+          Cancelar
+        </router-link>
+      </Button>
+      <Button type="submit" size="lg">
+        Cadastrar
+      </Button>
+    </div>
   </Form>
 </template>
