@@ -42,7 +42,7 @@ export const registerUser = async (user) => {
  * @param {int} id 
  * @returns {object}
  */
-export const showUser = async (id) => {
+export const getUser = async (id) => {
   const response = await fetch(`${import.meta.env.VITE_API_USER}/${id}`, {
     method: 'GET',
     headers: {
@@ -63,7 +63,7 @@ export const showUser = async (id) => {
  * Atualiza um usuário
  * @param {object} user 
  */
-export const updateUser = async (user) => {
+export const updateUser = async (id, user) => {
   const response = await fetch(`${import.meta.env.VITE_API_USER}/${id}`, {
     method: 'PUT',
     headers: {

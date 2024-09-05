@@ -58,3 +58,13 @@ export const statesField = [
   "SE",
   "TO"
 ]
+
+/**
+ * Convert date format from "YYYY-MM-DD" to "DD/MM/YYYY"
+ * @param date The date in "YYYY-MM-DD" format
+ * @returns The date in "DD/MM/YYYY" format
+ */
+export const convertDateFormat = (date: string): string => {
+  const [year, month, day] = date.split("-");
+  return `${day}/${month}/${year}`;
+};
