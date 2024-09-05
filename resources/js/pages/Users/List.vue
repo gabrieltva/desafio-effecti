@@ -7,6 +7,8 @@ import Button from '@/components/ui/button/Button.vue';
 import { Pencil2Icon, TrashIcon } from '@radix-icons/vue';
 import { Input } from '@/components/ui/input';
 import RemoveDialog from '@/components/ui/remove-dialog/RemoveDialog.vue';
+import { toast } from '@/components/ui/toast';
+import { deleteUser } from '@/services/api';
 
 const content = ref([]);
 const contentFiltered = ref([]);
@@ -66,6 +68,34 @@ const filterData = (search) => {
       user.phone.toLowerCase().includes(search.toLowerCase());
   });
 };
+
+const cancelRemove = () => {
+  userToRemove.value = null;
+};
+
+const continueRemove = async () => {
+  try {
+    await deleteUser(userToRemove.value);
+  }
+  catch (error) {
+    toast({
+      title: 'Erro ao remover usuário',
+      description: 'Ocorreu um erro ao remover o usuário, tente novamente',
+      variant: 'destructive'
+    });
+    return;
+  }
+  finally {
+    userToRemove.value = null;
+  }
+
+  toast({
+    title: 'Usuário removido',
+    description: 'O usuário foi removido com sucesso',
+    variant: 'success'
+  });
+  await getData();
+};
 </script>
 
 <template>
@@ -73,7 +103,13 @@ const filterData = (search) => {
     Lista de usuários
   </h1>
 
-  <Input class="max-w-64 w-full" placeholder="Filtro" v-model="filterInput" @input="filterData(filterInput)" />
+  <div class="flex justify-between space-x-2 lg:flex-row space-y-2">
+    <Input class="max-w-64 w-full" placeholder="Filtro" v-model="filterInput" @input="filterData(filterInput)" />
+    <Button class="bg-green-600 hover:bg-green-800 text-white">
+      Exportar usuários
+    </Button>
+  </div>
+
 
   <div class="space-y-8 flex flex-col">
     <SkeletonUserList v-if="isLoading" v-for="index in 4" :key="index" />
@@ -118,5 +154,5 @@ const filterData = (search) => {
     </div>
   </div>
 
-  <RemoveDialog v-if="userToRemove !== null" />
+  <RemoveDialog v-if="userToRemove !== null" @cancel="cancelRemove" @continue="continueRemove" />
 </template>

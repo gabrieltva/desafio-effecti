@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,10 +9,21 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { SymbolIcon } from '@radix-icons/vue';
+import { ref } from 'vue';
+
+const emit = defineEmits(['cancel', 'continue'])
+
+const isLoading = ref(false)
+
+const onContinue = () => {
+  isLoading.value = true
+  emit('continue')
+}
 </script>
 
 <template>
-  <AlertDialog>
+  <AlertDialog :open="true">
     <slot />
     <AlertDialogContent>
       <AlertDialogHeader>
@@ -22,8 +33,11 @@ import {
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
-        <AlertDialogCancel>Cancelar</AlertDialogCancel>
-        <AlertDialogAction>Continuar</AlertDialogAction>
+        <AlertDialogCancel @click="emit('cancel')">Cancelar</AlertDialogCancel>
+        <AlertDialogAction @click="onContinue" :disabled="isLoading">
+          <SymbolIcon v-if="isLoading" class="w-4 h-4 mr-2 animate-spin text-white" />
+          Continuar
+        </AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
   </AlertDialog>
