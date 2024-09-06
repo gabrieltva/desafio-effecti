@@ -42,9 +42,10 @@ jobs:
 
       - name: Generate app key
         run: php artisan key:generate
-      
-      - name: Wait for MySQL to be ready
-        run: sleep 30
+
+      - name: Create SQLite Database
+        run: |
+          touch /tmp/database.sqlite
 
       - name: Run migrations
         run: php artisan migrate --force
