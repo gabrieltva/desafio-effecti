@@ -3,10 +3,13 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
+  
+  use DatabaseMigrations;
 
   /**
    * Test creating a new user.

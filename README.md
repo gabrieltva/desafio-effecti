@@ -16,8 +16,8 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
 Clone o repositório do GitHub para o seu ambiente local:
 
 ```bash
-git clone https://github.com/gabrieltva/desafio-plan.git
-cd desafio-plan
+git clone https://github.com/gabrieltva/desafio-effecti.git
+cd desafio-effecti
 ```
 
 ### 2. Configuração do Ambiente
@@ -34,43 +34,14 @@ docker-compose up --build -d
 
 Este comando irá construir e iniciar os contêineres especificados no `docker-compose.yml`.
 
-### 4. Instalar as Dependências do Composer
+### 4. Rodar os tests
 
-Para instalar as dependências PHP do Laravel utilizando o Composer:
-
-```bash
-docker-compose run --rm app composer install
-```
-
-### 5. Buildar o Vite
-
-Execute o comando para baixar os pacotes e buildar o front-end:
+Para executar os testes do Laravel:
 
 ```bash
-docker-compose run --rm app npm install
-docker-compose run --rm app npm run build
+docker-compose run --rm app php artisan test
 ```
 
-### 6. Ajustar Permissões
-
-Para ajustar as permissões dos diretórios necessários, execute os seguintes comandos:
-
-```bash
-docker-compose run --rm app chown -R www-data:www-data /var/www/storage
-docker-compose run --rm app chown -R www-data:www-data /var/www/bootstrap/cache
-```
-
-### 6. Migrar e Popular o Banco de Dados
-
-Após executar os testes, migre e popule o banco de dados conforme necessário, e gere a key do .env com os comandos a seguir:
-
-```bash
-docker-compose run --rm app php artisan migrate
-docker-compose run --rm app php artisan key:generate
-```
-
-Estes comandos executam as migrações pendentes do banco de dados e adicionará uma key ao .env.
-
-### 7. Acessar a Aplicação
+### 5. Acessar a Aplicação
 
 Depois de seguir os passos acima, acesse a aplicação em seu navegador utilizando o endereço local configurado no seu ambiente Docker (http://localhost:8989).
