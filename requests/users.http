@@ -1,5 +1,5 @@
 ### Create a new user
-POST http://localhost:8989/api/users
+POST http://localhost:8000/api/users
 Content-Type: application/json
 
 {
@@ -12,7 +12,7 @@ Content-Type: application/json
   "state": "AP",
   "city": "Irene d'Oeste",
   "neighborhood": "do Norte",
-  "address": "94291-749, Avenida Isadora Amaral, 82\nMatias do Leste - ES",
+  "address": "Avenida Isadora Amaral, 82",
   "status": 1,
 }
 
@@ -22,11 +22,11 @@ GET http://localhost:8989/api/users
 
 
 ### Show a user (only active users)
-GET http://localhost:8989/api/users/1
+GET http://localhost:8000/api/users/1
 
 
 ### Update a user
-PUT http://localhost:8989/api/users/2
+PUT http://localhost:8000/api/users/2
 Content-Type: application/json
 
 {
@@ -35,4 +35,4 @@ Content-Type: application/json
 
 
 ### Delete a user (only active users)
-DELETE http://localhost:8989/api/users/1
+DELETE http://localhost:8000/api/users/1
