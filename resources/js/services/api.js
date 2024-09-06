@@ -1,3 +1,5 @@
+import { formatErrorMessage } from "../utils/form";
+
 /**
  * Recupera todos os usuários
  * @returns {array}
@@ -32,9 +34,17 @@ export const registerUser = async (user) => {
     body: JSON.stringify(user)
   });
 
+  const data = await response.json();
+
   if (!response.ok) {
+    if (data) {
+      throw new Error(formatErrorMessage(data));
+    }
+
     throw new Error("Erro ao tentar registrar usuário");
   }
+
+  return data;
 }
 
 /**
@@ -72,9 +82,17 @@ export const updateUser = async (id, user) => {
     body: JSON.stringify(user)
   });
 
+  const data = await response.json();
+
   if (!response.ok) {
+    if (data) {
+      throw new Error(formatErrorMessage(data));
+    }
+
     throw new Error("Erro ao tentar atualizar usuário");
   }
+
+  return data;
 }
 
 /**

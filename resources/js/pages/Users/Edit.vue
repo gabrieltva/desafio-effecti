@@ -20,10 +20,10 @@ const onExecute = () => {
   });
 };
 
-const onError = () => {
+const onError = (message) => {
   toast({
     title: 'Erro ao atualizar usuário',
-    description: 'Ocorreu um erro ao atualizar o usuário, tente novamente',
+    description: message,
     variant: 'destructive'
   });
 };

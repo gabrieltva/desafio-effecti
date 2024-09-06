@@ -64,7 +64,32 @@ export const statesField = [
  * @param date The date in "YYYY-MM-DD" format
  * @returns The date in "DD/MM/YYYY" format
  */
-export const convertDateFormat = (date: string): string => {
+export const convertDateFormatToFront = (date: string): string => {
   const [year, month, day] = date.split("-");
   return `${day}/${month}/${year}`;
+};
+
+/**
+ * Convert date format from "DD/MM/YYYY" to "YYYY-MM-DD"
+ * @param date The date in "DD/MM/YYYY" format
+ * @returns The date in "YYYY-MM-DD" format
+ */
+export const convertDateFormatToBack = (date: string): string => {
+  const [day, month, year] = date.split("/");
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Convert the errors object into a single error message string
+ * @param errors The errors object
+ * @returns The error message string
+ */
+export const formatErrorMessage = (errors: any): string => {
+  console.log(errors.errors);
+  let errorMessage = "";
+  for (const field in errors.errors) {
+    const fieldErrors = errors.errors[field];
+    errorMessage += `${fieldErrors.join("\n")}\n`;
+  }
+  return errorMessage.trim();
 };

@@ -26,11 +26,13 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
+        $userId = $this->route('id');
+
         $rules = [
             'name' => 'required|string|max:255',
-            'cpf' => ['required', 'unique:users', new Cpf],
+            'cpf' => ['required', 'unique:users,cpf,' . $userId, new Cpf],
             'birth_date' => 'required|date',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $userId,
             'phone' => 'required|regex:/^\(?\d{2}\)?[\s-]?\d{4,5}[\s-]?\d{4}$/|max:15',
             'cep' => 'required|regex:/^\d{5}-\d{3}$/|max:9',
             'state' => 'required|string|max:2',
@@ -56,6 +58,7 @@ class UserRequest extends FormRequest
 
         return $rules;
     }
+
 
     /**
      * Handle a failed validation attempt.

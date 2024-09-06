@@ -17,10 +17,10 @@ const onExecute = () => {
   })
 }
 
-const onError = () => {
+const onError = (message) => {
   toast({
     title: 'Erro ao cadastrar usuário',
-    description: 'Ocorreu um erro ao cadastrar o usuário, tente novamente',
+    description: message,
     variant: 'destructive'
   })
 }

@@ -14,7 +14,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup } from '@/components/ui/select'
-import { fillAddressDataByCEP, statesField, convertDateFormat } from '@/utils/form'
+import { fillAddressDataByCEP, statesField, convertDateFormatToBack, convertDateFormatToFront } from '@/utils/form'
 import { registerUser } from '@/services/api'
 import { SymbolIcon } from '@radix-icons/vue'
 import { updateUser } from '@/services/api'
@@ -45,7 +45,7 @@ const setData = () => {
     setValues({
       name: data.name,
       cpf: data.cpf,
-      birth_date: convertDateFormat(data.birth_date),
+      birth_date: convertDateFormatToFront(data.birth_date),
       email: data.email,
       phone: data.phone,
       cep: data.cep,
@@ -77,11 +77,13 @@ const { handleSubmit, resetForm, setValues, values } = useForm({
 const onSubmit = handleSubmit(async (values) => {
   isLoading.value = true
 
+  values.birth_date = convertDateFormatToBack(values.birth_date)
+
   try {
     type === 'edit' ? await updateUser(data.id, values) : await registerUser(values)
   }
   catch (error) {
-    emit('onError')
+    emit('onError', error.message)
     return
   }
   finally {
