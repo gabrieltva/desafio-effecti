@@ -12,8 +12,6 @@ services:
     ports:
       - "8989:80"
     working_dir: /var/www/
-    volumes:
-      - ./:/var/www
     depends_on:
       - redis
       - db
@@ -26,10 +24,10 @@ services:
     image: mariadb:10.5.8
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE:-laravel}
+      MYSQL_DATABASE: ${DB_DATABASE:-desafio_effecti}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-userpass}
-      MYSQL_USER: ${DB_USERNAME:-username}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_USER: ${DB_USERNAME:-root}
     volumes:
       - ./.docker/mysql/dbdata:/var/lib/mysql
     ports:
