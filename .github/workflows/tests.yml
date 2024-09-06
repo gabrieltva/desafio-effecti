@@ -40,8 +40,23 @@ jobs:
       - name: Copy environment file
         run: cp .env.example .env
 
+      - name: Update environment variables
+        run: |
+          echo "DB_CONNECTION=mysql" >> .env
+          echo "DB_HOST=127.0.0.1" >> .env
+          echo "DB_PORT=3306" >> .env
+          echo "DB_DATABASE=desafio_effecti" >> .env
+          echo "DB_USERNAME=root" >> .env
+          echo "DB_PASSWORD=root" >> .env
+
       - name: Generate app key
         run: php artisan key:generate
+      
+      - name: Wait for MySQL to be ready
+        run: sleep 30
+
+      - name: Run migrations
+        run: php artisan migrate --force
 
       - name: Execute tests
         run: vendor/bin/phpunit
