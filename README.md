@@ -35,7 +35,7 @@ Este comando irá construir e iniciar os contêineres especificados no `docker-c
 Para executar os testes do Laravel:
 
 ```bash
-docker-compose run --rm app php artisan test
+docker-compose exec app php artisan test
 ```
 
 ### 4. Acessar a Aplicação
