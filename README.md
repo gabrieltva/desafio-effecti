@@ -20,11 +20,7 @@ git clone https://github.com/gabrieltva/desafio-effecti.git
 cd desafio-effecti
 ```
 
-### 2. Configuração do Ambiente
-
-Renomeie o arquivo `.env.example` para `.env` e configure as variáveis de ambiente conforme necessário para o seu projeto Laravel.
-
-### 3. Buildar o Ambiente Docker
+### 2. Buildar o Ambiente Docker
 
 Para construir os contêineres Docker e iniciar o ambiente de desenvolvimento:
 
@@ -34,7 +30,7 @@ docker-compose up --build -d
 
 Este comando irá construir e iniciar os contêineres especificados no `docker-compose.yml`.
 
-### 4. Rodar os tests
+### 3. Rodar os tests
 
 Para executar os testes do Laravel:
 
@@ -42,6 +38,6 @@ Para executar os testes do Laravel:
 docker-compose run --rm app php artisan test
 ```
 
-### 5. Acessar a Aplicação
+### 4. Acessar a Aplicação
 
 Depois de seguir os passos acima, acesse a aplicação em seu navegador utilizando o endereço local configurado no seu ambiente Docker (http://localhost:8989).
