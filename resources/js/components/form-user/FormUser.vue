@@ -90,7 +90,10 @@ const onSubmit = handleSubmit(async (values) => {
     isLoading.value = false
   }
 
-  resetForm()
+  if (type !== 'edit') {
+    resetForm()
+  }
+  
   emit('onExecute')
 })
 
